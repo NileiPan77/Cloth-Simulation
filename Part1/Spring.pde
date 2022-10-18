@@ -6,7 +6,6 @@ public class Spring{
 
     Vec2 vel;
     Vec2 newVel;
-
     public Spring(){
         this.pos = new Vec2(100,100);
         this.vel = new Vec2(0,0);

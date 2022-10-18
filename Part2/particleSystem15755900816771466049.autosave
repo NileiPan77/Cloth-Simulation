@@ -1,0 +1,130 @@
+public class Pair{
+    particle p1,p2;
+    float q,q2,q3;
+
+    public Pair(particle p1, particle p2, float q){
+        this.p1 = p1;
+        this.p2 = p2;
+        this.q = q;
+        this.q2 = q * q;
+        this.q3 = this.q2 * q;
+    }
+}
+
+public class particleSystem{
+    float height;
+    float width;
+
+    float k_smooth_radius;
+    float k_restDens;
+    float k_stiff;
+    float k_stiffN;
+
+    int numParticles;
+    particle[] particles;
+
+    int rows;
+    int cols;
+    public particleSystem(int row, int col){
+        this.rows = row;
+        this.cols = col;
+        this.numParticles = row * col;
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
+                particles[i*rows + j] = new particles(interpolate(0,cols,0,width,j), interpolate(0,rows,0,height/2,i));
+            }
+        }
+        this.particles = new particles[this.numParticles];
+        this.height = 720;
+        this.width = 1024;
+        this.k_smooth_radius = 3.5;
+        this.k_stiff = 150;
+        this.k_stiffN = 1000;
+        this.k_restDens = 0.2;
+    }
+
+    public void simulateSPH(float dt){
+        for(int i = 0; i < numParticles; i++){
+            particle p = particles[i];
+            p.vel = (p.pos.minus(p.oldPos).times(dt));
+            p.vel.add(new Vec2(0,10*dt));
+            
+            if(p.pos.y < 0){
+              p.pos.y = 0;
+              p.vel.y *= -0.3;
+            }
+            if(p.pos.y > this.height){
+                p.pos.y = this.height;
+                p.vel.y *= -0.3;
+            }
+    
+            if(p.pos.x > this.width){
+                p.pos.x = this.width;
+                p.vel.x *= -0.3;
+            }
+    
+            if(p.pos.x < 0){
+                p.pos.x = 0;
+                p.vel.x *= -0.3;
+            }
+    
+            p.oldPos = p.pos;
+            p.pos.add(p.vel.times(dt));
+    
+            p.dens = 0.0;
+            p.densN = 0.0;
+        }
+        
+        
+
+        ArrayList<Pair> pairs = new ArrayList<Pair>();
+        for(int i = 0; i < numParticles; i++){
+            for(int j = i+1; j < numParticles; j++){
+                float dis = particles[i].pos.distanceTo(particles[j].pos);
+                if(dis < k_smooth_radius){
+                    float q = 1 - (dist/this.k_smooth_radius);
+                    pairs.add(new Pair(particles[i],particles[j],q));
+                }
+            }
+        }
+
+        for(Pair p : pairs){
+            p.p1.dens += p.q2;
+            p.p2.dens += p.q2;
+            p.p1.densN += p.q3;
+            p.p2.densN += p.q3;
+        }
+
+        for(int i = 0; i < numParticles; i++){
+            particles[i].press = this.k_stiff * (p.dens - this.k_restDens);
+            p.pressN = this.k_stiffN * (p.densN);
+            if(p.press > 30){
+                p.press = 30;
+            }
+            if(p.pressN > 300){
+                p.pressN = 300;
+            }
+
+            for(Pair p : pairs){
+                particle a = p.p1;
+                particle b = p.p2;
+                float totalP = (a.press + b.press) * p.q + (a.pressN + b.pressN) * p.q2;
+                float displace = totalP * (dt*dt);
+                a.pos += (a.pos.minus*(b.pos)).normalized().times(displace);
+                b.pos += (b.pos.minus*(a.pos)).normalized().times(displace);
+            }
+        }
+
+    }
+
+    public void drawSystem(float dt){
+        for(int i = 0; i < numParticles; i++){
+            float q = numParticles[i].press/30;
+            color(0.7-q*0.5,0.8-q*0.4,1.0-q*0.2);
+            
+            circle(numParticles[i].pos.x,numParticles[i].pos.y,3);
+        }
+
+    }
+
+}

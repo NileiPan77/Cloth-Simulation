@@ -12,14 +12,14 @@ public void joinPos(float dt){
              d.normalize();
              float v1 = dot(d,cur.vel3d);
              float v2 = dot(d,next.vel3d);
-             float force = -system.k * (system.restLen-l) - system.kv * (v1 - v2);
+           float force = -system.k * (system.restLen-l) - system.kv * (v1 - v2);
              Vec3 vel = d.times(force * dt/system.mass);
              cur.newVel3d.add(vel);
-             //cur.newVel3d.subtract(cur.vel3d.times(system.kvf));
+             cur.newVel3d.subtract(cur.vel3d.times(system.kvf));
              next.newVel3d.subtract(vel);
          }
      }
-     
+   //air drag
    for(int i = 0; i < rows-1; i++){
          for(int j = 0; j < cols - 1; j++){
               Spring topLeft = cloth[i][j];

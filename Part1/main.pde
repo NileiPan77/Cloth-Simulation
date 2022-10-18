@@ -1,5 +1,5 @@
 SpringSystemRope system;
-int threads = 1;
+int threads = 4;
 int rows = 16;
 int cols = 16;
 int rowsPerThread = rows/threads;
