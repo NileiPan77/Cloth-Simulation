@@ -20,7 +20,8 @@ public class particleSystem{
     float k_restDens;
     float k_stiff;
     float k_stiffN;
-
+  
+    int maxParticles;
     int numParticles;
     particle[] particles;
 
@@ -28,27 +29,44 @@ public class particleSystem{
     int cols;
     
     float grab_radius;
+    
+    float waterRate = 0.01;
+    float counter = 0;
     public particleSystem(int row, int col){
-        r = 10;
+        r = 18;
         this.width = 1024;
         this.height = 720;
         this.rows = row;
         this.cols = col;
+        this.maxParticles = 10000;
         this.numParticles = row * col;
-        this.particles = new particle[this.numParticles];
+        this.particles = new particle[maxParticles];
         for(int i = 0; i < rows; i++){
             for(int j = 0; j < cols; j++){
                 particles[i*cols + j] = new particle(interpolate(0,cols,10,width-10,j)+random(0,10), interpolate(0,rows,10,height/2,i));
-                println("particle ",i*cols + j,":", particles[i*cols + j].pos);  
+                //println("particle ",i*cols + j,":", particles[i*cols + j].pos);  
           }
         }
-        this.k_smooth_radius = 10;
-        this.k_stiff = 15;
-        this.k_stiffN = 100;
+        this.k_smooth_radius = r;
+        this.k_stiff = 3000;
+        this.k_stiffN = 1000;
         this.k_restDens = 0.2;
         this.grab_radius = 35;
     }
-
+    
+    public void runningWater(float dt){
+        counter += dt;
+        if(counter > waterRate && this.numParticles < this.maxParticles){
+             counter = 0;
+             this.particles[this.numParticles] = new particle(100,100);
+             this.particles[this.numParticles].pos.add(new Vec2(0.3,0));
+             this.numParticles++;
+             
+             this.particles[this.numParticles] = new particle(300,100);
+             this.particles[this.numParticles].pos.add(new Vec2(-0.3,0));
+             this.numParticles++;
+        }
+    }
     public void simulateSPH(float dt){
         for(int i = 0; i < numParticles; i++){
             particle p = particles[i];
