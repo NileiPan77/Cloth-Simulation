@@ -1,3 +1,5 @@
+
+
 # Physically-based simulation
 
 Name: Nilei Pan
@@ -15,8 +17,16 @@ Implemented:
 
 
 
-- Top left: no air drag, top right: air drag, bottom left: air 30 unit/s, bottom right: air 100 unit/s
-- <img src=".\nodrag.gif" alt="nodrag" style="zoom:25%;" /><img src=".\air0.gif" alt="air0" style="zoom:25%;" /><img src=".\air30.gif" alt="air30" style="zoom:25%;" /><img src=".\air100.gif" alt="air100" style="zoom:25%;" />
+- No air drag
+  - <img src=".\nodrag.gif" alt="nodrag" style="zoom:25%;" />
+
+-  With air drag
+  - <img src=".\air0.gif" alt="air0" style="zoom:25%;" />
+
+- Air 30 unit/s
+  - <img src=".\air30.gif" alt="air30" style="zoom:25%;" />
+- Air 100 unit/s
+  - <img src=".\air100.gif" alt="air100" style="zoom:25%;" />
 
 
 

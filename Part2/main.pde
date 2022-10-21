@@ -39,7 +39,7 @@ void mousePressed(){
         particle p = new particle(mouseX,mouseY);
         p.colored = new Vec3(255,125,0);
         p.alpha = 255;
-        p.r = 30;
+        p.r = 20;
         p.nonWater = true;
         system.particles[system.numParticles] = p;
         system.numParticles++;

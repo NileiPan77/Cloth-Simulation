@@ -236,7 +236,7 @@ public class particleSystem{
         
         for(int i = 0; i < numBalls; i++){
             particle p = ballPos[i];
-            image(duck,p.pos.x-p.r,p.pos.y-p.r,100,100);
+            image(duck,p.pos.x-p.r,p.pos.y-p.r,70,70);
         }
 
     }
