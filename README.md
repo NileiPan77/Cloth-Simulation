@@ -41,7 +41,7 @@ Implemented:
 
 - SPH Fluid Simulation
 
-![water](C:\Users\Nilei Pan\Documents\GitHub\5611_CSCI\Cloth-Simulation\water.gif)
+![water](.\water.gif)
 
 
 
