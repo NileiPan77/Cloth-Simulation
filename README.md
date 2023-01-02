@@ -41,7 +41,7 @@ Implemented:
 
 - SPH Fluid Simulation
 
-![water](.\water.gif)
+<img src=".\water.gif" alt="demo" style="zoom:50%;" />
 
 
 
